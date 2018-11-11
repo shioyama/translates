@@ -1,38 +1,22 @@
 # Translates
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/translates`. To experiment with that code, run `bin/console` for an interactive prompt.
+Translates is an extremely minimalist implementation of the [Mobility](https://github.com/shioyama/mobility) translation framework. It is intended to serve as a teaching aid to explain concepts such as [Inversion of Control](https://en.wikipedia.org/wiki/Inversion_of_control) and [Separation of Concerns](https://en.wikipedia.org/wiki/Separation_of_concerns).
 
-TODO: Delete this and the text above, and describe your gem
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'translates'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install translates
+Translates is composed of a very small core and some sample backends and plugins you can use to implement storage patterns and access patterns.
 
 ## Usage
 
-TODO: Write usage instructions here
+Extend the `Translates` module in your class and call `translates` with one or more attribute names as well as a backend class and optional array of plugins. You need to explicitly require each backend and plugin you use since they are not autoloaded.
 
-## Development
+```ruby
+require 'translates/column_backend'
+require 'translates/fallbacks_plugin'
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
-
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
-
-## Contributing
-
-Bug reports and pull requests are welcome on GitHub at https://github.com/shioyama/translates.
+class Post
+  extend Translates
+  translates :title, backend: Translates::ColumnBackend, plugins: [Translates::FallbacksPlugin]
+end
+```
 
 ## License
 
